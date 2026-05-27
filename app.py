@@ -183,20 +183,58 @@ st.markdown("""
         color: #c7d2fe;
     }
     
-    /* About section */
-    .about-card {
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 1.5rem;
-        border-radius: 12px;
+    /* About section cards */
+    .about-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
         margin-bottom: 1.5rem;
+        margin-top: 0.5rem;
     }
-    .about-title {
+    .about-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 1.25rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .about-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(129, 140, 248, 0.3);
+        box-shadow: 0 8px 24px rgba(129, 140, 248, 0.12);
+    }
+    .about-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .about-card-icon {
+        background: rgba(129, 140, 248, 0.1);
+        border-radius: 10px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.25rem;
         color: #818cf8;
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        font-weight: 600;
+    }
+    .about-card-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        background: linear-gradient(90deg, #c7d2fe, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+    .about-card-text {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
     }
     
     /* Suggestion pills */
@@ -251,51 +289,90 @@ st.markdown("""
     
     /* Guidance cards */
     .guidance-section {
-        background-color: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
+        background-color: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 18px;
         padding: 1.75rem;
         margin-top: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
     .guidance-title {
-        font-size: 1.4rem;
-        font-weight: 600;
+        font-size: 1.35rem;
+        font-weight: 700;
         color: #e2e8f0;
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: -0.01em;
+    }
+    .guidance-card {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-left: 4px solid #818cf8;
+        padding: 1.25rem;
+        border-radius: 4px 12px 12px 4px;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .guidance-card:hover {
+        transform: translateX(3px);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+    .guidance-card-title {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
-    .guidance-card {
-        background-color: rgba(255, 255, 255, 0.02);
-        border-left: 4px solid #818cf8;
-        padding: 1rem;
-        border-radius: 0 8px 8px 0;
-        margin-bottom: 1rem;
-    }
-    .guidance-card-title {
-        font-weight: 600;
-        font-size: 0.95rem;
-        color: #94a3b8;
-        margin-bottom: 0.25rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
     .guidance-card-content {
         color: #f1f5f9;
         font-size: 1.05rem;
-        line-height: 1.5;
+        line-height: 1.6;
+        font-style: italic;
+    }
+    .activity-card-content {
+        color: #f1f5f9;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+    .tip-box {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin-top: 1rem;
     }
     .tip-item {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
         display: flex;
-        gap: 0.5rem;
+        gap: 0.75rem;
         align-items: flex-start;
-        color: #e2e8f0;
+        color: #cbd5e1;
+        font-size: 0.98rem;
+        line-height: 1.5;
     }
-    .tip-bullet {
-        color: #818cf8;
-        font-weight: bold;
+    .tip-item:last-child {
+        margin-bottom: 0;
+    }
+    .tip-icon {
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+        font-weight: 700;
     }
     
     /* Placeholder info box */
@@ -365,21 +442,36 @@ with col_input:
     # SECTION 2 — About the Project
     with st.expander("ℹ️ About the Project & Technology Stack", expanded=False):
         st.markdown("""
-        <div class="about-card">
-            <div class="about-title">Importance of Emotional AI</div>
-            <p style="color:#cbd5e1; font-size:0.95rem; line-height:1.5; margin-bottom:1rem;">
-                Emotional AI (Affective Computing) enables machines to detect, interpret, and respond to human emotional states. In mental health contexts, monitoring emotional sentiment in written thoughts can act as an early flag for stress, anxiety, or depression, assisting individuals and clinicians in tracking emotional wellbeing.
-            </p>
+        <div class="about-container">
+            <div class="about-card">
+                <div class="about-card-header">
+                    <div class="about-card-icon">🧠</div>
+                    <h4 class="about-card-title">Importance of Emotional AI</h4>
+                </div>
+                <p class="about-card-text">
+                    Emotional AI (Affective Computing) enables machines to detect, interpret, and respond to human emotional states. In mental health contexts, monitoring emotional sentiment in written thoughts can act as an early flag for stress, anxiety, or depression, assisting individuals and clinicians in tracking emotional wellbeing.
+                </p>
+            </div>
             
-            <div class="about-title">NLP Applications</div>
-            <p style="color:#cbd5e1; font-size:0.95rem; line-height:1.5; margin-bottom:1rem;">
-                Natural Language Processing (NLP) translates unstructured text into machine-readable formats. By mapping words to numerical representations (embeddings) and analyzing context, NLP algorithms capture semantic meaning, enabling fine-grained emotion classification.
-            </p>
+            <div class="about-card">
+                <div class="about-card-header">
+                    <div class="about-card-icon">💻</div>
+                    <h4 class="about-card-title">NLP Applications</h4>
+                </div>
+                <p class="about-card-text">
+                    Natural Language Processing (NLP) translates unstructured text into machine-readable formats. By mapping words to numerical representations (embeddings) and analyzing context, NLP algorithms capture semantic meaning, enabling fine-grained emotion classification.
+                </p>
+            </div>
             
-            <div class="about-title">Role of RNNs in Sequence Learning</div>
-            <p style="color:#cbd5e1; font-size:0.95rem; line-height:1.5; margin-bottom:0;">
-                Recurrent Neural Networks (RNNs) are designed for sequential data like text. Unlike standard feedforward neural networks, RNNs possess "memory" (internal feedback loops) that allows them to process words in relation to previous words, making them highly effective at understanding context and order in sequence sentiment analysis.
-            </p>
+            <div class="about-card">
+                <div class="about-card-header">
+                    <div class="about-card-icon">🔄</div>
+                    <h4 class="about-card-title">Role of RNNs in Sequence Learning</h4>
+                </div>
+                <p class="about-card-text">
+                    Recurrent Neural Networks (RNNs) are designed for sequential data like text. Unlike standard feedforward neural networks, RNNs possess "memory" (internal feedback loops) that allows them to process words in relation to previous words, making them highly effective at understanding context and order in sequence sentiment analysis.
+                </p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
@@ -531,18 +623,29 @@ with col_output:
                 <div class="guidance-title">🌱 Emotional Guidance & Action Plan</div>
                 
                 <div class="guidance-card" style="border-left-color: {g_data['color']};">
-                    <div class="guidance-card-title">Motivational Message</div>
+                    <div class="guidance-card-title" style="color: {g_data['color']};">
+                        <span>✨</span> MOTIVATIONAL MESSAGE
+                    </div>
                     <div class="guidance-card-content">"{g_data['motivational_message']}"</div>
                 </div>
                 
                 <div class="guidance-card" style="border-left-color: {g_data['color']};">
-                    <div class="guidance-card-title">Suggested Positive Activity</div>
-                    <div class="guidance-card-content">{g_data['positive_activity']}</div>
+                    <div class="guidance-card-title" style="color: {g_data['color']};">
+                        <span>🎯</span> SUGGESTED POSITIVE ACTIVITY
+                    </div>
+                    <div class="activity-card-content">{g_data['positive_activity']}</div>
                 </div>
                 
-                <div style="margin-top: 1rem; padding: 0.5rem 0 0 0;">
-                    <div class="guidance-card-title" style="margin-bottom: 0.5rem;">Emotional Wellness Tips</div>
-                    {"".join(f'<div class="tip-item"><span class="tip-bullet" style="color: {g_data["color"]};">•</span><div>{tip}</div></div>' for tip in g_data['wellness_tips'])}
+                <div class="tip-box">
+                    <div class="guidance-card-title" style="margin-bottom: 0.75rem; color: #a5b4fc;">
+                        <span>💡</span> EMOTIONAL WELLNESS TIPS
+                    </div>
+                    {"".join(f'''
+                    <div class="tip-item">
+                        <div class="tip-icon" style="color: {g_data['color']}; background: {g_data['color']}20;">✓</div>
+                        <div>{tip}</div>
+                    </div>
+                    ''' for tip in g_data['wellness_tips'])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
