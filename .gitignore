@@ -20,3 +20,4 @@ env/
 inspect_models.py
 inspect_tokenizer.py
 test_padding.py
+train_model.py

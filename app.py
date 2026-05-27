@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import os
+import re
+import nltk
 
 # Set page configuration
 st.set_page_config(
@@ -44,21 +46,8 @@ except Exception as e:
     assets_loaded = False
     loading_error = str(e)
 
-# Emotional guidance details mapped to predictions
+# Emotional guidance details mapped to the 7 real trained classes
 GUIDANCE_DATA = {
-    'Anger': {
-        'status': 'Elevated Frustration & Anger',
-        'motivational_message': "It is completely valid to feel angry. Anger is a natural emotion that signals a boundary has been crossed, but how we channel it determines its outcome.",
-        'positive_activity': "Engage in high-energy physical activity (like a brisk run, workout, or cleaning), or practice the 4-7-8 breathing technique to soothe the nervous system.",
-        'wellness_tips': [
-            "Take a step back from the current environment to allow your heart rate to normalize.",
-            "Write down your raw feelings without filter, then safely discard the paper as a symbolic release.",
-            "Communicate using constructive 'I feel' statements instead of pointing fingers."
-        ],
-        'color': '#FF4B4B',
-        'gradient': 'linear-gradient(135deg, #FF4B4B, #FF7575)',
-        'emoji': '⚡'
-    },
     'Anxiety': {
         'status': 'Mild to High Anxiety & Uneasiness',
         'motivational_message': "Anxiety feels like an overwhelming storm, but remember that you are the sky, not the weather. This feeling is uncomfortable, but you are safe and it will pass.",
@@ -71,6 +60,19 @@ GUIDANCE_DATA = {
         'color': '#FFAA00',
         'gradient': 'linear-gradient(135deg, #FFAA00, #FFC95F)',
         'emoji': '🌪️'
+    },
+    'Bipolar': {
+        'status': 'Significant Mood Oscillations',
+        'motivational_message': "Navigating extreme emotional shifts is incredibly challenging. Keep anchor points in your day; small, consistent routines can help stabilize your energy.",
+        'positive_activity': "Create a daily mood and sleep log, or engage in a calm, structured activity like coloring, building blocks, or sorting.",
+        'wellness_tips': [
+            "Maintain a regular sleep schedule, as sleep disruptions can trigger mood instability.",
+            "Break down goals into tiny, predictable steps to prevent feeling overwhelmed or overstimulated.",
+            "Have a pre-arranged action plan with family, friends, or a therapist for intense moods."
+        ],
+        'color': '#AB47BC',
+        'gradient': 'linear-gradient(135deg, #AB47BC, #E1BEE7)',
+        'emoji': '🌓'
     },
     'Depression': {
         'status': 'Persistent Low Mood & Depressive Feelings',
@@ -85,10 +87,10 @@ GUIDANCE_DATA = {
         'gradient': 'linear-gradient(135deg, #5A6372, #8E9AA6)',
         'emoji': '☁️'
     },
-    'Happy': {
-        'status': 'Positive, Joyful & Mentally Balanced',
-        'motivational_message': "What a beautiful headspace to be in! Celebrating and absorbing joyful moments builds long-term mental resilience and creates a positive neurological loop.",
-        'positive_activity': "Savor this feeling by journaling about the specific triggers of your happiness, sending a appreciative message to a friend, or listening to your favorite song.",
+    'Normal': {
+        'status': 'Stable, Joyful & Mentally Balanced',
+        'motivational_message': "What a beautiful headspace to be in! Celebrating and absorbing stable, balanced moments builds long-term mental resilience and creates a positive neurological loop.",
+        'positive_activity': "Savor this feeling by journaling about the specific triggers of your stable mood, sending an appreciative message to a friend, or listening to your favorite song.",
         'wellness_tips': [
             "Practice gratitude by noting down three specific things that made today bright.",
             "Channel this positive momentum into a creative project or hobby you enjoy.",
@@ -98,31 +100,18 @@ GUIDANCE_DATA = {
         'gradient': 'linear-gradient(135deg, #00C853, #5AF158)',
         'emoji': '☀️'
     },
-    'Panic': {
-        'status': 'Acute Panic or High-Alert State',
-        'motivational_message': "Panic can feel terrifying, but it is just your body's alarm system misfiring. The adrenaline rush will naturally peak and subside in a few minutes. You are safe.",
-        'positive_activity': "Sit down comfortably, press your feet firmly onto the ground, and wrap your arms tightly around yourself to create a physical sense of grounding.",
+    'Personality disorder': {
+        'status': 'Complex Emotional Intensity',
+        'motivational_message': "Your emotions might feel intense and rapidly changing. Remember that emotions are information, not directives. You can observe them without having to react immediately.",
+        'positive_activity': "Use temperature therapy: wash your face with ice-cold water or hold a warm cup of tea to calm the physical response.",
         'wellness_tips': [
-            "Hold an ice cube or splash cold water on your face to activate the vagus nerve and slow your heart rate.",
-            "Focus strictly on breathing: inhale slowly for 4 seconds, hold for 4, exhale for 4, hold for 4 (box breathing).",
-            "Take a short break and talk with someone you trust."
+            "Practice the 'STOP' technique: Stop, Take a step back, Observe your feelings, and Proceed mindfully.",
+            "Engage in non-judgmental journaling—let your thoughts flow onto paper without editing them.",
+            "Focus on grounding yourself in your physical body through deep breaths or stretching."
         ],
-        'color': '#D50000',
-        'gradient': 'linear-gradient(135deg, #D50000, #FF3D3D)',
-        'emoji': '🚨'
-    },
-    'Sadness': {
-        'status': 'Emotional Sadness & Vulnerability',
-        'motivational_message': "Sadness is not a weakness; it is a profound testament to your capacity to feel and care. Allowing yourself to feel sad is the first step toward healing.",
-        'positive_activity': "Get cozy under a warm blanket, prepare a cup of warm tea, and allow yourself to rest, listen to calm music, or watch a comforting movie.",
-        'wellness_tips': [
-            "Give yourself permission to cry if needed—it releases stress hormones and acts as a natural emotional detox.",
-            "Express your feelings creatively through writing, painting, or whispering them aloud to yourself.",
-            "Treat yourself with the same compassion and care you would offer to a dear friend who is grieving."
-        ],
-        'color': '#2979FF',
-        'gradient': 'linear-gradient(135deg, #2979FF, #7DA8FF)',
-        'emoji': '🌧️'
+        'color': '#00ACC1',
+        'gradient': 'linear-gradient(135deg, #00ACC1, #80DEEA)',
+        'emoji': '🎭'
     },
     'Stress': {
         'status': 'Cognitive Overload & Stress Tension',
@@ -136,6 +125,19 @@ GUIDANCE_DATA = {
         'color': '#7C4DFF',
         'gradient': 'linear-gradient(135deg, #7C4DFF, #B388FF)',
         'emoji': '⚖️'
+    },
+    'Suicidal': {
+        'status': 'Critical Distress / High Crisis State',
+        'motivational_message': "Please know that your pain is real, but there is help and you do not have to walk through this darkness alone. There are people who want to listen and support you.",
+        'positive_activity': "Connect immediately with someone you trust, or call/text a mental health support line (like 988 in the US/Canada or your local crisis helpline).",
+        'wellness_tips': [
+            "Reach out to a professional immediately: call or text the Suicide & Crisis Lifeline at 988.",
+            "Remove yourself from any immediate risk or tools, and move to a safe, public, or shared space.",
+            "Take a short break and talk with someone you trust."
+        ],
+        'color': '#D50000',
+        'gradient': 'linear-gradient(135deg, #D50000, #FF3D3D)',
+        'emoji': '🚨'
     }
 }
 
@@ -343,16 +345,16 @@ if "user_text" not in st.session_state:
 # Define suggestions and their target feelings to showcase
 suggestions = [
     {
-        "label": "🌱 Serenity / Peace",
+        "label": "🌱 Balanced & Peaceful",
         "text": "I walked along the beach and found peace in the sound of the waves. It was a good day."
     },
     {
-        "label": "⚡ Stress & Overwhelm",
-        "text": "I feel completely overwhelmed, irritated, and stressed with my workload. I cannot sleep."
+        "label": "🌪️ Anxious & Worried",
+        "text": "I feel completely anxious and worried about my future. My mind is constantly racing."
     },
     {
-        "label": "🌧️ Sadness / Empty",
-        "text": "Lately, I feel so drained, empty, and just want to sleep all day. Everything feels heavy."
+        "label": "🌧️ Tired & Hopeless",
+        "text": "I feel tired, hopeless, and empty. I do not enjoy anything anymore and just want to sleep."
     }
 ]
 
@@ -386,7 +388,7 @@ with col_input:
     # SECTION 3 — User Text Input Area
     # Create the text area linked to session state
     user_input = st.text_area(
-        label="Share what's on your mind. Your text will be analyzed locally and private.",
+        label="Share what's on your mind. Your text will be analyzed locally and privately.",
         value=st.session_state.user_text,
         placeholder="Enter your thoughts or feelings here...",
         height=180,
@@ -411,14 +413,33 @@ with col_output:
     st.subheader("📊 Analysis Results")
     
     # Trigger analysis on click OR if the input is changed via suggestion selection
-    # Wait, we want to analyze if either the button is clicked, or if user_input has content and a suggestion was just clicked
     should_analyze = analyze_clicked or (st.session_state.user_text != "" and user_input == st.session_state.user_text)
     
     if should_analyze and user_input.strip() != "":
         with st.spinner("Analyzing text patterns using RNN model..."):
             # Preprocess the input
+            # Load stopwords list
+            from nltk.corpus import stopwords
+            from nltk.tokenize import word_tokenize
+            
+            try:
+                stop_words = set(stopwords.words('english'))
+            except:
+                nltk.download('stopwords')
+                nltk.download('punkt')
+                stop_words = set(stopwords.words('english'))
+                
+            clean_text = str(user_input).lower()
+            clean_text = re.sub(r'[^a-zA-Z\s]', '', clean_text)
+            try:
+                tokens = word_tokenize(clean_text)
+            except:
+                tokens = clean_text.split()
+            tokens = [w for w in tokens if w not in stop_words]
+            processed_text = ' '.join(tokens)
+            
             # 1. texts_to_sequences
-            seq = tokenizer.texts_to_sequences([user_input])
+            seq = tokenizer.texts_to_sequences([processed_text])
             
             # 2. pad_sequences (maxlen=50, matching model architecture)
             from tensorflow.keras.preprocessing.sequence import pad_sequences
