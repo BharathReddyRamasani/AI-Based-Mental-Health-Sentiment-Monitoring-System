@@ -1,0 +1,22 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+# Streamlit files
+.streamlit/
+
+# Temporary files
+inspect_models.py
+inspect_tokenizer.py
+test_padding.py
