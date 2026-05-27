@@ -441,39 +441,35 @@ col_input, col_output = st.columns([1.1, 0.9], gap="large")
 with col_input:
     # SECTION 2 — About the Project
     with st.expander("ℹ️ About the Project & Technology Stack", expanded=False):
-        st.markdown("""
-        <div class="about-container">
-            <div class="about-card">
-                <div class="about-card-header">
-                    <div class="about-card-icon">🧠</div>
-                    <h4 class="about-card-title">Importance of Emotional AI</h4>
-                </div>
-                <p class="about-card-text">
-                    Emotional AI (Affective Computing) enables machines to detect, interpret, and respond to human emotional states. In mental health contexts, monitoring emotional sentiment in written thoughts can act as an early flag for stress, anxiety, or depression, assisting individuals and clinicians in tracking emotional wellbeing.
-                </p>
-            </div>
-            
-            <div class="about-card">
-                <div class="about-card-header">
-                    <div class="about-card-icon">💻</div>
-                    <h4 class="about-card-title">NLP Applications</h4>
-                </div>
-                <p class="about-card-text">
-                    Natural Language Processing (NLP) translates unstructured text into machine-readable formats. By mapping words to numerical representations (embeddings) and analyzing context, NLP algorithms capture semantic meaning, enabling fine-grained emotion classification.
-                </p>
-            </div>
-            
-            <div class="about-card">
-                <div class="about-card-header">
-                    <div class="about-card-icon">🔄</div>
-                    <h4 class="about-card-title">Role of RNNs in Sequence Learning</h4>
-                </div>
-                <p class="about-card-text">
-                    Recurrent Neural Networks (RNNs) are designed for sequential data like text. Unlike standard feedforward neural networks, RNNs possess "memory" (internal feedback loops) that allows them to process words in relation to previous words, making them highly effective at understanding context and order in sequence sentiment analysis.
-                </p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div class="about-container">
+<div class="about-card">
+<div class="about-card-header">
+<div class="about-card-icon">🧠</div>
+<h4 class="about-card-title">Importance of Emotional AI</h4>
+</div>
+<p class="about-card-text">
+Emotional AI (Affective Computing) enables machines to detect, interpret, and respond to human emotional states. In mental health contexts, monitoring emotional sentiment in written thoughts can act as an early flag for stress, anxiety, or depression, assisting individuals and clinicians in tracking emotional wellbeing.
+</p>
+</div>
+<div class="about-card">
+<div class="about-card-header">
+<div class="about-card-icon">💻</div>
+<h4 class="about-card-title">NLP Applications</h4>
+</div>
+<p class="about-card-text">
+Natural Language Processing (NLP) translates unstructured text into machine-readable formats. By mapping words to numerical representations (embeddings) and analyzing context, NLP algorithms capture semantic meaning, enabling fine-grained emotion classification.
+</p>
+</div>
+<div class="about-card">
+<div class="about-card-header">
+<div class="about-card-icon">🔄</div>
+<h4 class="about-card-title">Role of RNNs in Sequence Learning</h4>
+</div>
+<p class="about-card-text">
+Recurrent Neural Networks (RNNs) are designed for sequential data like text. Unlike standard feedforward neural networks, RNNs possess "memory" (internal feedback loops) that allows them to process words in relation to previous words, making them highly effective at understanding context and order in sequence sentiment analysis.
+</p>
+</div>
+</div>""", unsafe_allow_html=True)
         
     st.subheader("📝 Express Your Thoughts")
     
@@ -618,37 +614,30 @@ with col_output:
             st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
             
             # SECTION 7 — Emotional Guidance Area
-            st.markdown(f"""
-            <div class="guidance-section">
-                <div class="guidance-title">🌱 Emotional Guidance & Action Plan</div>
-                
-                <div class="guidance-card" style="border-left-color: {g_data['color']};">
-                    <div class="guidance-card-title" style="color: {g_data['color']};">
-                        <span>✨</span> MOTIVATIONAL MESSAGE
-                    </div>
-                    <div class="guidance-card-content">"{g_data['motivational_message']}"</div>
-                </div>
-                
-                <div class="guidance-card" style="border-left-color: {g_data['color']};">
-                    <div class="guidance-card-title" style="color: {g_data['color']};">
-                        <span>🎯</span> SUGGESTED POSITIVE ACTIVITY
-                    </div>
-                    <div class="activity-card-content">{g_data['positive_activity']}</div>
-                </div>
-                
-                <div class="tip-box">
-                    <div class="guidance-card-title" style="margin-bottom: 0.75rem; color: #a5b4fc;">
-                        <span>💡</span> EMOTIONAL WELLNESS TIPS
-                    </div>
-                    {"".join(f'''
-                    <div class="tip-item">
-                        <div class="tip-icon" style="color: {g_data['color']}; background: {g_data['color']}20;">✓</div>
-                        <div>{tip}</div>
-                    </div>
-                    ''' for tip in g_data['wellness_tips'])}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="guidance-section">
+<div class="guidance-title">🌱 Emotional Guidance & Action Plan</div>
+<div class="guidance-card" style="border-left-color: {g_data['color']};">
+<div class="guidance-card-title" style="color: {g_data['color']};">
+<span>✨</span> MOTIVATIONAL MESSAGE
+</div>
+<div class="guidance-card-content">"{g_data['motivational_message']}"</div>
+</div>
+<div class="guidance-card" style="border-left-color: {g_data['color']};">
+<div class="guidance-card-title" style="color: {g_data['color']};">
+<span>🎯</span> SUGGESTED POSITIVE ACTIVITY
+</div>
+<div class="activity-card-content">{g_data['positive_activity']}</div>
+</div>
+<div class="tip-box">
+<div class="guidance-card-title" style="margin-bottom: 0.75rem; color: #a5b4fc;">
+<span>💡</span> EMOTIONAL WELLNESS TIPS
+</div>
+{"".join(f'''<div class="tip-item">
+<div class="tip-icon" style="color: {g_data['color']}; background: {g_data['color']}20;">✓</div>
+<div>{tip}</div>
+</div>''' for tip in g_data['wellness_tips'])}
+</div>
+</div>""", unsafe_allow_html=True)
             
     else:
         # Initial placeholder state
