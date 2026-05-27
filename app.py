@@ -145,64 +145,221 @@ GUIDANCE_DATA = {
 st.markdown("""
 <style>
     /* Google Fonts import */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     
-    /* Global Styles */
+    /* Base App Custom Overrides */
+    .stApp {
+        background: radial-gradient(circle at 50% 50%, #0d0f18 0%, #05060b 100%) !important;
+        color: #f8fafc !important;
+        overflow-x: hidden;
+    }
+    
+    /* Background Ambient Glowing Orbs */
+    .stApp::before {
+        content: '';
+        position: absolute;
+        top: -150px;
+        left: -150px;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0) 70%);
+        filter: blur(90px);
+        pointer-events: none;
+        z-index: 0;
+        animation: orb-bounce-1 25s infinite alternate ease-in-out;
+    }
+    .stApp::after {
+        content: '';
+        position: absolute;
+        bottom: -150px;
+        right: -150px;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0) 70%);
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+        animation: orb-bounce-2 30s infinite alternate ease-in-out;
+    }
+    
+    @keyframes orb-bounce-1 {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(80px, 120px) scale(1.15); }
+        100% { transform: translate(-40px, -40px) scale(0.9); }
+    }
+    @keyframes orb-bounce-2 {
+        0% { transform: translate(0, 0) scale(1.1); }
+        50% { transform: translate(-100px, -80px) scale(0.85); }
+        100% { transform: translate(60px, 40px) scale(1.05); }
+    }
+    
+    /* Global Typography */
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif;
-        font-weight: 600;
+        font-weight: 700;
+        letter-spacing: -0.02em;
     }
     
-    /* Header styling */
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-6px) rotate(2deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+    @keyframes pulseShadow {
+        0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 10px var(--emotion-color, rgba(129, 140, 248, 0.15)); }
+        50% { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 25px var(--emotion-color, rgba(129, 140, 248, 0.35)); }
+        100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 10px var(--emotion-color, rgba(129, 140, 248, 0.15)); }
+    }
+    
+    .fade-in-section {
+        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .floating-emoji {
+        display: inline-block;
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    /* Header Container styling (Premium Glassmorphism) */
     .header-container {
-        background: linear-gradient(135deg, #1e1b4b, #312e81, #1e3a8a);
-        padding: 2.5rem;
-        border-radius: 16px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+        padding: 3.5rem 2rem;
+        border-radius: 28px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        margin-bottom: 2.5rem;
+        box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        overflow: hidden;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .header-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, transparent 60%);
+        pointer-events: none;
     }
     .header-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.025em;
-        background: linear-gradient(90deg, #ffffff, #e0e7ff, #a5b4fc);
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.85rem;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 70%, #818cf8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
     }
     .header-subtitle {
-        font-size: 1.15rem;
-        font-weight: 300;
-        opacity: 0.9;
+        font-size: 1.25rem;
+        font-weight: 400;
         letter-spacing: 0.05em;
-        color: #c7d2fe;
+        color: #94a3b8;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.5;
+    }
+    .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(129, 140, 248, 0.12);
+        border: 1px solid rgba(129, 140, 248, 0.25);
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #a5b4fc;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.25rem;
     }
     
-    /* About section cards */
+    /* 3D Glassmorphic Cards (About cards, results, guidance) */
+    .card-3d {
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card-3d:hover {
+        transform: translateY(-8px) rotateX(3deg) rotateY(-3deg) scale3d(1.01, 1.01, 1.01);
+        border-color: rgba(129, 140, 248, 0.25);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(129, 140, 248, 0.08);
+    }
+    
+    /* About section expander styling */
+    div[data-testid="stExpander"] {
+        background: rgba(255, 255, 255, 0.01) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+        overflow: hidden !important;
+        backdrop-filter: blur(8px);
+        margin-bottom: 1.5rem !important;
+    }
+    div[data-testid="stExpander"] details {
+        border: none !important;
+    }
+    div[data-testid="stExpander"] summary {
+        background: rgba(255, 255, 255, 0.02) !important;
+        padding: 0.9rem 1.25rem !important;
+        font-weight: 600 !important;
+        color: #e2e8f0 !important;
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.05rem;
+        transition: background 0.3s, color 0.3s;
+    }
+    div[data-testid="stExpander"] summary:hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #818cf8 !important;
+    }
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+        padding: 1.25rem !important;
+    }
+    
     .about-container {
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-        margin-bottom: 1.5rem;
-        margin-top: 0.5rem;
     }
     .about-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.04);
         border-radius: 14px;
         padding: 1.25rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease;
     }
     .about-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(129, 140, 248, 0.3);
-        box-shadow: 0 8px 24px rgba(129, 140, 248, 0.12);
+        transform: translateY(-4px) scale(1.005);
+        border-color: rgba(129, 140, 248, 0.15);
     }
     .about-card-header {
         display: flex;
@@ -213,150 +370,231 @@ st.markdown("""
     .about-card-icon {
         background: rgba(129, 140, 248, 0.1);
         border-radius: 10px;
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         color: #818cf8;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     }
     .about-card-title {
         font-size: 1.15rem;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: -0.01em;
-        background: linear-gradient(90deg, #c7d2fe, #e0e7ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #e2e8f0;
         margin: 0;
     }
     .about-card-text {
-        color: #cbd5e1;
+        color: #94a3b8;
         font-size: 0.95rem;
         line-height: 1.6;
         margin: 0;
     }
     
-    /* Suggestion pills */
+    /* Input Area & Forms Overrides */
+    .stTextArea textarea {
+        border-radius: 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(15, 23, 42, 0.4) !important;
+        color: #f8fafc !important;
+        font-size: 1.05rem !important;
+        padding: 1.25rem !important;
+        line-height: 1.6 !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s !important;
+        backdrop-filter: blur(8px);
+    }
+    .stTextArea textarea:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2), 0 8px 24px rgba(99, 102, 241, 0.15) !important;
+        background-color: rgba(15, 23, 42, 0.6) !important;
+    }
+    
+    /* Primary Action Button (Tactile 3D style) */
+    .stButton>button[kind="primary"] {
+        border-radius: 14px !important;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        padding: 0.8rem 2rem !important;
+        box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .stButton>button[kind="primary"]:hover {
+        transform: translateY(-3px) scale(1.01) !important;
+        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    .stButton>button[kind="primary"]:active {
+        transform: translateY(1px) !important;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+    }
+    
+    /* Secondary Action Button (Suggestion Tags) */
+    .stButton>button[kind="secondary"] {
+        border-radius: 12px !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        color: #cbd5e1 !important;
+        font-size: 0.9rem !important;
+        padding: 0.5rem 1rem !important;
+        transition: all 0.25s ease-in-out !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        backdrop-filter: blur(8px);
+    }
+    .stButton>button[kind="secondary"]:hover {
+        transform: translateY(-2px) rotate(1deg) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(129, 140, 248, 0.3) !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), 0 0 10px rgba(129, 140, 248, 0.1) !important;
+    }
+    .stButton>button[kind="secondary"]:active {
+        transform: translateY(1px) !important;
+    }
+    
     .suggestion-label {
         font-size: 0.85rem;
         font-weight: 600;
-        color: #94a3b8;
+        color: #64748b;
+        margin-top: 1rem;
         margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
     }
     
-    /* Result card */
+    /* Analysis Results Layout */
     .result-container {
-        border-radius: 16px;
-        padding: 2rem;
+        border-radius: 24px;
+        padding: 2.25rem;
         color: white;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         margin-bottom: 2rem;
-        transition: transform 0.3s ease;
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        animation: pulseShadow 4s infinite ease-in-out;
     }
     .result-container:hover {
-        transform: translateY(-2px);
+        transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
     }
     .result-label {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        opacity: 0.8;
-        margin-bottom: 0.25rem;
+        letter-spacing: 0.15em;
+        opacity: 0.85;
+        margin-bottom: 0.4rem;
+        font-weight: 600;
     }
     .result-emotion {
-        font-size: 2.75rem;
-        font-weight: 700;
+        font-size: 3.5rem;
+        font-weight: 800;
         margin: 0;
-        line-height: 1.2;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
     .result-score {
-        font-size: 1.25rem;
-        font-weight: 500;
-        margin-top: 0.5rem;
+        font-size: 1.35rem;
+        font-weight: 600;
+        margin-top: 0.75rem;
         opacity: 0.95;
     }
     .result-status {
-        background: rgba(255, 255, 255, 0.15);
-        padding: 0.4rem 1rem;
+        background: rgba(255, 255, 255, 0.18);
+        padding: 0.6rem 1.4rem;
         border-radius: 9999px;
         display: inline-block;
         font-size: 0.85rem;
-        margin-top: 1rem;
-        font-weight: 600;
-        backdrop-filter: blur(4px);
+        margin-top: 1.25rem;
+        font-weight: 700;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
     
-    /* Guidance cards */
+    /* Guidance Layout & Section Styling */
     .guidance-section {
-        background-color: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 18px;
-        padding: 1.75rem;
+        background-color: rgba(255, 255, 255, 0.015);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 24px;
+        padding: 2.25rem;
         margin-top: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
     }
     .guidance-title {
-        font-size: 1.35rem;
+        font-size: 1.45rem;
         font-weight: 700;
-        color: #e2e8f0;
-        margin-bottom: 1.25rem;
+        color: #f1f5f9;
+        margin-bottom: 1.75rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
         letter-spacing: -0.01em;
     }
     .guidance-card {
         background: rgba(255, 255, 255, 0.01);
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        border-left: 4px solid #818cf8;
-        padding: 1.25rem;
-        border-radius: 4px 12px 12px 4px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-left: 5px solid #818cf8;
+        padding: 1.5rem;
+        border-radius: 8px 20px 20px 8px;
         margin-bottom: 1.25rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
     .guidance-card:hover {
-        transform: translateX(3px);
-        background: rgba(255, 255, 255, 0.03);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transform: translateX(6px) scale(1.005);
+        background: rgba(255, 255, 255, 0.025);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     }
     .guidance-card-title {
         font-weight: 700;
         font-size: 0.85rem;
         color: #94a3b8;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.65rem;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.1em;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.6rem;
     }
     .guidance-card-content {
-        color: #f1f5f9;
-        font-size: 1.05rem;
+        color: #f8fafc;
+        font-size: 1.1rem;
         line-height: 1.6;
+        font-weight: 400;
         font-style: italic;
     }
     .activity-card-content {
-        color: #f1f5f9;
+        color: #f8fafc;
         font-size: 1.05rem;
         line-height: 1.6;
     }
     .tip-box {
-        background: rgba(255, 255, 255, 0.01);
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        padding: 1.25rem;
-        border-radius: 12px;
-        margin-top: 1rem;
+        background: rgba(15, 23, 42, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 1.5rem;
+        border-radius: 18px;
+        margin-top: 1.5rem;
     }
     .tip-item {
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
         display: flex;
-        gap: 0.75rem;
+        gap: 1rem;
         align-items: flex-start;
         color: #cbd5e1;
-        font-size: 0.98rem;
+        font-size: 1rem;
         line-height: 1.5;
     }
     .tip-item:last-child {
@@ -364,49 +602,41 @@ st.markdown("""
     }
     .tip-icon {
         border-radius: 50%;
-        width: 22px;
-        height: 22px;
+        width: 26px;
+        height: 26px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         flex-shrink: 0;
         margin-top: 2px;
         font-weight: 700;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
     
     /* Placeholder info box */
     .placeholder-box {
-        border: 2px dashed rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 3rem;
+        border: 2px dashed rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 4.5rem 2.5rem;
         text-align: center;
-        color: #94a3b8;
-    }
-    
-    /* Custom spacing */
-    .stTextArea textarea {
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        background-color: rgba(255, 255, 255, 0.02);
-        color: #f8fafc;
-        font-size: 1.05rem;
+        color: #64748b;
+        background-color: rgba(255, 255, 255, 0.005);
+        backdrop-filter: blur(8px);
         transition: border-color 0.3s;
     }
-    .stTextArea textarea:focus {
-        border-color: #818cf8;
-        box-shadow: 0 0 0 1px #818cf8;
+    .placeholder-box:hover {
+        border-color: rgba(129, 140, 248, 0.2);
     }
 </style>
 """, unsafe_allow_html=True)
 
 # SECTION 1 — Header
-st.markdown("""
-<div class="header-container">
-    <div class="header-title">AI-Based Mental Health Sentiment Monitoring System</div>
-    <div class="header-subtitle">Emotion Detection using Simple Recurrent Neural Networks</div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("""<div class="header-container">
+<div class="header-badge">⚡ Interactive AI Platform</div>
+<div class="header-title"><span class="floating-emoji">🧠</span> AI-Based Mental Health Sentiment Monitoring System</div>
+<div class="header-subtitle">Analyze emotional markers and sequence sentiment in written thoughts using deep learning Recurrent Neural Networks</div>
+</div>""", unsafe_allow_html=True)
 
 # Handle error loading assets
 if not assets_loaded:
@@ -442,7 +672,7 @@ with col_input:
     # SECTION 2 — About the Project
     with st.expander("ℹ️ About the Project & Technology Stack", expanded=False):
         st.markdown("""<div class="about-container">
-<div class="about-card">
+<div class="about-card card-3d">
 <div class="about-card-header">
 <div class="about-card-icon">🧠</div>
 <h4 class="about-card-title">Importance of Emotional AI</h4>
@@ -451,7 +681,7 @@ with col_input:
 Emotional AI (Affective Computing) enables machines to detect, interpret, and respond to human emotional states. In mental health contexts, monitoring emotional sentiment in written thoughts can act as an early flag for stress, anxiety, or depression, assisting individuals and clinicians in tracking emotional wellbeing.
 </p>
 </div>
-<div class="about-card">
+<div class="about-card card-3d">
 <div class="about-card-header">
 <div class="about-card-icon">💻</div>
 <h4 class="about-card-title">NLP Applications</h4>
@@ -460,7 +690,7 @@ Emotional AI (Affective Computing) enables machines to detect, interpret, and re
 Natural Language Processing (NLP) translates unstructured text into machine-readable formats. By mapping words to numerical representations (embeddings) and analyzing context, NLP algorithms capture semantic meaning, enabling fine-grained emotion classification.
 </p>
 </div>
-<div class="about-card">
+<div class="about-card card-3d">
 <div class="about-card-header">
 <div class="about-card-icon">🔄</div>
 <h4 class="about-card-title">Role of RNNs in Sequence Learning</h4>
@@ -555,7 +785,7 @@ with col_output:
             
             # SECTION 5 — Prediction Output
             st.markdown(f"""
-            <div class="result-container" style="background: {g_data['gradient']};">
+            <div class="result-container" style="--emotion-color: {g_data['color']}; background: {g_data['gradient']};">
                 <div class="result-label">Predominant Emotion Detected</div>
                 <div class="result-emotion">{g_data['emoji']} {predicted_emotion}</div>
                 <div class="result-score">Confidence Score: {confidence_score * 100:.1f}%</div>
@@ -616,13 +846,13 @@ with col_output:
             # SECTION 7 — Emotional Guidance Area
             st.markdown(f"""<div class="guidance-section">
 <div class="guidance-title">🌱 Emotional Guidance & Action Plan</div>
-<div class="guidance-card" style="border-left-color: {g_data['color']};">
+<div class="guidance-card card-3d" style="border-left-color: {g_data['color']};">
 <div class="guidance-card-title" style="color: {g_data['color']};">
 <span>✨</span> MOTIVATIONAL MESSAGE
 </div>
 <div class="guidance-card-content">"{g_data['motivational_message']}"</div>
 </div>
-<div class="guidance-card" style="border-left-color: {g_data['color']};">
+<div class="guidance-card card-3d" style="border-left-color: {g_data['color']};">
 <div class="guidance-card-title" style="color: {g_data['color']};">
 <span>🎯</span> SUGGESTED POSITIVE ACTIVITY
 </div>
