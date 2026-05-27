@@ -443,7 +443,7 @@ with col_output:
             
             # 2. pad_sequences (maxlen=50, matching model architecture)
             from tensorflow.keras.preprocessing.sequence import pad_sequences
-            padded = pad_sequences(seq, maxlen=50, padding='post', truncating='post')
+            padded = pad_sequences(seq, maxlen=50, padding='pre', truncating='pre')
             
             # 3. Predict sentiment probability distribution
             predictions = model.predict(padded, verbose=0)[0]
